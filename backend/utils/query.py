@@ -1,6 +1,5 @@
 import chromadb
 from chonkie import ChromaHandshake, RecursiveChunker, Visualizer, OpenAIEmbeddings
-from markitdown import MarkItDown
 from openai import OpenAI
 from os import getenv
 from dotenv import load_dotenv  

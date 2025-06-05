@@ -1,22 +1,81 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+
+// Create an axios instance with the base URL
+const api = axios.create({
+  baseURL: 'http://localhost:8000',  // FastAPI backend URL
+  headers: {
+    'Content-Type': 'application/json',
+  },
+})
 
 export default function Home() {
   const [messages, setMessages] = useState<{ text: string; isUser: boolean }[]>([])
   const [input, setInput] = useState('')
+  const [userId] = useState('user-1') // In a real app, this would be dynamic
+  const [error, setError] = useState<string | null>(null)
+
+  // Load chat history on component mount
+  useEffect(() => {
+    const loadHistory = async () => {
+      try {
+        console.log('Attempting to load chat history...')
+        const response = await api.get(`/api/history/${userId}`)
+        console.log('Chat history response:', response.data)
+        const history = response.data.history
+        const formattedMessages = history.map((msg: any) => ({
+          text: msg.content,
+          isUser: msg.role === 'user'
+        }))
+        setMessages(formattedMessages)
+        setError(null)
+      } catch (error: any) {
+        console.error('Error loading chat history:', error)
+        setError(`Failed to load chat history: ${error.message}`)
+        if (error.response) {
+          console.error('Error response:', error.response.data)
+          console.error('Error status:', error.response.status)
+        }
+      }
+    }
+    loadHistory()
+  }, [userId])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!input.trim()) return
 
-    // Add user message
+    // Add user message to UI immediately
     setMessages(prev => [...prev, { text: input, isUser: true }])
     setInput('')
+    setError(null)
 
-    // TODO: Add API call to backend here
-    // For now, just echo the message
-    setMessages(prev => [...prev, { text: `Echo: ${input}`, isUser: false }])
+    try {
+      console.log('Sending message to backend:', input)
+      // Send message to backend
+      const response = await api.post('/api/chat', {
+        message: input,
+        userId: userId
+      })
+      console.log('Backend response:', response.data)
+
+      // Add bot response to UI
+      setMessages(prev => [...prev, { text: response.data.response, isUser: false }])
+    } catch (error: any) {
+      console.error('Error sending message:', error)
+      if (error.response) {
+        console.error('Error response:', error.response.data)
+        console.error('Error status:', error.response.status)
+      }
+      // Add error message to UI
+      setError(`Failed to send message: ${error.message}`)
+      setMessages(prev => [...prev, { 
+        text: 'Sorry, there was an error processing your message. Please try again.',
+        isUser: false 
+      }])
+    }
   }
 
   return (
@@ -24,6 +83,12 @@ export default function Home() {
       <div className="w-full max-w-2xl">
         <h1 className="text-3xl font-bold text-center mb-8">Chatbot</h1>
         
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <span className="block sm:inline">{error}</span>
+          </div>
+        )}
+
         <div className="bg-white rounded-lg shadow-lg p-4 mb-4 h-[60vh] overflow-y-auto">
           {messages.map((message, index) => (
             <div
