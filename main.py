@@ -13,7 +13,7 @@ app = FastAPI()
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://next-chatbot-git-main-nobel-suhendras-projects.vercel.app/"],  # Frontend URL
+    allow_origins=["https://next-chatbot-git-main-nobel-suhendras-projects.vercel.app"],  # Frontend URL
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
