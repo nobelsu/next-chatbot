@@ -32,14 +32,14 @@ def text2SQL(q, df, table_name):
 def querySQL(q, tableCnt):
     for i in range(tableCnt):
         table_name = f"table{i}"
-        print("here")
         df = db.sql(f"DESCRIBE {table_name}")
-        print("here2")
         sqlQuery = text2SQL(q, df, table_name)
         sqlQuery = sqlQuery.replace("```sql", "").replace("```", "").strip()
-        print("sqlQuery: ", sqlQuery)
-        print("db: ", type(db.sql(sqlQuery)))
-        print("here3")
-        if sqlQuery != "none":
-            return str(db.sql(sqlQuery).df().to_dict(orient="records"))
+        try:
+            result = db.sql(sqlQuery).df().to_dict(orient="records")
+            return str(result)  # or json.dumps(result), or format it differently
+        except Exception as e:
+            return f"SQL Error: {str(e)}"
+        # if sqlQuery != "none":
+        #     return db.sql(sqlQuery)
     return "I'm sorry, I can't answer that question."
