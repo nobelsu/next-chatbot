@@ -35,6 +35,7 @@ def querySQL(q, tableCnt):
         df = db.sql(f"DESCRIBE {table_name}")
         sqlQuery = text2SQL(q, df, table_name)
         sqlQuery = sqlQuery.replace("```sql", "").replace("```", "").strip()
+        sqlQuery = sqlQuery.replace("`", '"') 
         print(sqlQuery)
         try:
             if sqlQuery != "none":
