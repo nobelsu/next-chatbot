@@ -41,7 +41,7 @@ async def chat(request: ChatRequest):
     try:
         addHistory(request.userId, "user", request.message)
         
-        q = rewriteQuery(request.message)
+        q = rewriteQuery(request.message, getHistory(request.userId))
         intent = classifyIntent(q)
         print(q, intent)
         
