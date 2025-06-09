@@ -3,10 +3,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Dict
 from backend.utils.intent import classifyIntent
+from backend.utils.rewrite import rewriteQuery
 from backend.utils.query import sendQuery
 from backend.utils.memory import getHistory, addHistory
 from backend.utils.collection import createCollection
 from backend.utils.chunker import chunkFiles
+from backend.utils.sql import querySQL
 
 app = FastAPI()
 
@@ -20,7 +22,7 @@ app.add_middleware(
 )
 
 # Initialize collection
-chunks = chunkFiles()
+chunks, tableCnt = chunkFiles()
 collection = createCollection(chunks)
 
 class Message(BaseModel):
@@ -37,20 +39,17 @@ class ChatResponse(BaseModel):
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
     try:
-        # Store user message in history
         addHistory(request.userId, "user", request.message)
         
-        # Classify intent
-        intent = classifyIntent(request.message)
+        q = rewriteQuery(request.message)
+        intent = classifyIntent(q)
         
         if intent == "vector":
-            # Get answer from vector search
-            response = sendQuery(request.message, collection)
-        else:
-            # For general queries, you might want to use a different model or response
+            response = sendQuery(q, collection)
+        elif intent == "general":
             response = "I'm a general assistant. How can I help you?"
-        
-        # Store bot response in history
+        else:
+            response = querySQL(q, tableCnt)
         addHistory(request.userId, "assistant", response)
         
         return ChatResponse(response=response)

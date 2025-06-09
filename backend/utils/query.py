@@ -4,6 +4,11 @@ from openai import OpenAI
 from os import getenv
 from dotenv import load_dotenv  
 
+load_dotenv()
+model = OpenAI(
+    api_key=getenv("OPENAI_API_KEY"),
+)
+
 def get_rag_answer(results, query, model, model_name="gpt-4o", temperature=0):
     """
     Generate an answer using RAG (Retrieval Augmented Generation).
@@ -42,10 +47,6 @@ Question: {query}"""
     return response.choices[0].message.content 
 
 def sendQuery(q, collection):
-    load_dotenv()
-    model = OpenAI(
-        api_key=getenv("OPENAI_API_KEY"),
-    )
     embeddings = OpenAIEmbeddings()
     query_embedding = embeddings.embed(q)
     results = collection.query(
