@@ -1,0 +1,11 @@
+EmployeeID,FirstName,LastName,Department,Title,Email,Phone,DateOfJoining,Salary,Status
+E001,John,Doe,Engineering,Software Engineer,john.doe@example.com,555-1234,2018-03-15,85000,Active
+E002,Jane,Smith,Marketing,Marketing Manager,jane.smith@example.com,555-2345,2019-06-10,95000,Active
+E003,Bob,Johnson,Sales,Sales Executive,bob.johnson@example.com,555-3456,2020-01-20,72000,Active
+E004,Alice,Williams,HR,HR Specialist,alice.williams@example.com,555-4567,2017-11-05,67000,On Leave
+E005,Charlie,Brown,Finance,Accountant,charlie.brown@example.com,555-5678,2016-09-12,78000,Resigned
+E006,Diana,Garcia,Engineering,DevOps Engineer,diana.garcia@example.com,555-6789,2021-04-25,88000,Active
+E007,Eric,Martinez,Engineering,Data Scientist,eric.martinez@example.com,555-7890,2022-02-01,91000,Active
+E008,Grace,Lee,Design,UX Designer,grace.lee@example.com,555-8901,2023-05-19,73000,Active
+E009,Henry,Clark,Engineering,Frontend Developer,henry.clark@example.com,555-9012,2020-08-14,82000,Active
+E010,Irene,Lewis,Support,Customer Support,irene.lewis@example.com,555-0123,2019-12-01,60000,Active
