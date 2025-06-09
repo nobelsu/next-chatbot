@@ -101,7 +101,7 @@ export default function ChatPage() {
               }`}
             >
               <div
-                className={`inline-block p-3 rounded-lg ${
+                className={`inline-block p-3 rounded-lg whitespace-pre-wrap ${
                   message.isUser
                     ? 'bg-blue-500 text-white'
                     : 'bg-gray-200 text-gray-800'
