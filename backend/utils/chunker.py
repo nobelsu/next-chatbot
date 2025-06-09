@@ -16,7 +16,8 @@ def chunkFiles():
             chunks.append(chunker.chunk(markdown_doc))
         elif f[len(f)-3:] == "csv":
             table_name = f"table{tableCnt}"
-            db.sql(f"CREATE TABLE {table_name} AS SELECT * FROM read_csv_auto('data/{f}')")
+            if not db.sql(f"SELECT * FROM information_schema.tables WHERE table_name = '{table_name}'").fetchone():
+                db.sql(f"CREATE TABLE {table_name} AS SELECT * FROM read_csv_auto('documents/MYRA-22-07-24-22-7-24.csv')")
             tableCnt += 1        
 
     return chunks, tableCnt
