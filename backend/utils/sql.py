@@ -38,7 +38,7 @@ def querySQL(q, tableCnt):
         sqlQuery = text2SQL(q, df, table_name)
         sqlQuery = sqlQuery.replace("```sql", "").replace("```", "").strip()
         print("sqlQuery: ", sqlQuery)
-        print("db: ", db.sql(sqlQuery))
+        print("db: ", type(db.sql(sqlQuery)))
         print("here3")
         if sqlQuery != "none":
             return db.sql(sqlQuery)
