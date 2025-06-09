@@ -30,6 +30,23 @@ def text2SQL(q, df, table_name):
     )
     return response.choices[0].message.content
 
+def sql2Text(q):
+    prompt = f"""
+    You are a helpful assistant that can turn SQL data into user-friendly text.
+    Make sure that the data is presented in a readable and easily digestible format.
+
+    The data is {q}
+    """
+    response = model.chat.completions.create(
+        model="gpt-4.1",
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant that can turn SQL data into user-friendly text."},
+            {"role": "user", "content": prompt}
+        ],
+        temperature=0
+    )
+    return response.choices[0].message.content
+
 def querySQL(q, tableCnt):
     for i in range(tableCnt):
         table_name = f"table{i}"
@@ -40,7 +57,7 @@ def querySQL(q, tableCnt):
         try:
             if sqlQuery != "none":
                 result = db.sql(sqlQuery).df().to_dict(orient="records")
-                return str(result) 
+                return sql2Text(str(result)) 
         except Exception as e:
             return f"SQL Error: {str(e)}"
     return "I'm sorry, I can't answer that question."
