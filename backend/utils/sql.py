@@ -13,7 +13,7 @@ def text2SQL(q, df, table_name):
     prompt = f"""
     You are a helpful assistant that can generate SQL queries to answer questions about the data.
     The data could be stored in the following table: {table_name}. 
-    If the table's data is insufficient, return "none".
+    If the table's data is insufficient, only return the string "none".
     Here is the schema of the table:
     {df}
     The question is: {q}
@@ -32,9 +32,12 @@ def text2SQL(q, df, table_name):
 def querySQL(q, tableCnt):
     for i in range(tableCnt):
         table_name = f"table{i}"
+        print("here")
         df = db.sql(f"DESCRIBE {table_name}")
+        print("here2")
         sqlQuery = text2SQL(q, df, table_name)
         sqlQuery = sqlQuery.replace("```sql", "").replace("```", "").strip()
+        print("sqlQuery: ", sqlQuery)
         if sqlQuery != "none":
             return db.sql(sqlQuery)
     return "I'm sorry, I can't answer that question."
