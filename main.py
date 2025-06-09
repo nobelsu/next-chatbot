@@ -43,6 +43,7 @@ async def chat(request: ChatRequest):
         
         q = rewriteQuery(request.message)
         intent = classifyIntent(q)
+        print(q, intent)
         
         if intent == "vector":
             response = sendQuery(q, collection)
@@ -54,6 +55,7 @@ async def chat(request: ChatRequest):
         
         return ChatResponse(response=response)
     except Exception as e:
+        print(str(e))
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/history/{user_id}")
