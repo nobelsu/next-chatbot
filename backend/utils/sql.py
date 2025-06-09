@@ -14,6 +14,7 @@ def text2SQL(q, df, table_name):
     You are a helpful assistant that can generate SQL queries to answer questions about the data.
     The data could be stored in the following table: {table_name}. 
     If the table's data is insufficient, only return the string "none".
+    Please ensure that the SQL queries are valid for DuckDB.
     Here is the schema of the table:
     {df}
     The question is: {q}
@@ -35,7 +36,6 @@ def querySQL(q, tableCnt):
         df = db.sql(f"DESCRIBE {table_name}")
         sqlQuery = text2SQL(q, df, table_name)
         sqlQuery = sqlQuery.replace("```sql", "").replace("```", "").strip()
-        sqlQuery = sqlQuery.replace("`", '"') 
         print(sqlQuery)
         try:
             if sqlQuery != "none":
