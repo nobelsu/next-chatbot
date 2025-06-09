@@ -41,5 +41,5 @@ def querySQL(q, tableCnt):
         print("db: ", type(db.sql(sqlQuery)))
         print("here3")
         if sqlQuery != "none":
-            return db.sql(sqlQuery)
+            return str(db.sql(sqlQuery).df().to_dict(orient="records"))
     return "I'm sorry, I can't answer that question."
