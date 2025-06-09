@@ -35,11 +35,11 @@ def querySQL(q, tableCnt):
         df = db.sql(f"DESCRIBE {table_name}")
         sqlQuery = text2SQL(q, df, table_name)
         sqlQuery = sqlQuery.replace("```sql", "").replace("```", "").strip()
+        print(sqlQuery)
         try:
-            result = db.sql(sqlQuery).df().to_dict(orient="records")
-            return str(result)  # or json.dumps(result), or format it differently
+            if sqlQuery != "none":
+                result = db.sql(sqlQuery).df().to_dict(orient="records")
+                return str(result) 
         except Exception as e:
             return f"SQL Error: {str(e)}"
-        # if sqlQuery != "none":
-        #     return db.sql(sqlQuery)
     return "I'm sorry, I can't answer that question."
