@@ -31,7 +31,7 @@ def text2SQL(q, df, table_name):
 
 def querySQL(q, tableCnt):
     for i in range(tableCnt):
-        table_name = f"table{tableCnt}"
+        table_name = f"table{i}"
         df = db.sql(f"DESCRIBE {table_name}")
         sqlQuery = text2SQL(q, df, table_name)
         sqlQuery = sqlQuery.replace("```sql", "").replace("```", "").strip()
