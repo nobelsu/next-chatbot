@@ -21,7 +21,7 @@ def createCollectionPDF(chunks):
 def createCollectionCSV(chunks):
     texts = [chunk.text for chunk in chunks]
     metadatas = [chunk.metadata for chunk in chunks]
-    ids = [chunk.id for chunk in chunks]
+    ids = [str(chunk.id) for chunk in chunks]
     client = chromadb.Client()
     collection = client.get_or_create_collection("csv_data")
     # handshake = ChromaHandshake(client=client, collection_name="csv_data", embedding_model=embeddings, path="db/csv_db")
