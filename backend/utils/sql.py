@@ -35,6 +35,7 @@ def sql2Text(q):
     prompt = f"""
     You are a helpful assistant that can turn SQL data into user-friendly text.
     Make sure that the data is presented in a readable and easily digestible format.
+    If the data provided is not JSON/SQL data, respond with "I'm sorry, I can't answer that question." 
 
     The data is {q}
     """
@@ -56,7 +57,7 @@ def querySQL(q, collection):
         n_results=3
     )
     print(results["documents"][0])
-    print("metadata", results["documents"][0].metadata)
+    print("metadata", results["documents"][0][0].metadata)
     return "Temporary"
     # for i in range(tableCnt):
     #     table_name = f"table{i}"
