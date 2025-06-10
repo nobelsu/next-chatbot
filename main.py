@@ -6,7 +6,7 @@ from backend.utils.intent import classifyIntent
 from backend.utils.rewrite import rewriteQuery
 from backend.utils.query import sendQuery
 from backend.utils.memory import getHistory, addHistory
-from backend.utils.collection import createCollection
+from backend.utils.collection import createCollectionPDF, createCollectionCSV
 from backend.utils.chunker import chunkFiles
 from backend.utils.sql import querySQL
 
@@ -22,8 +22,9 @@ app.add_middleware(
 )
 
 # Initialize collection
-chunks, tableCnt = chunkFiles()
-collection = createCollection(chunks)
+chunks, chunksSQL = chunkFiles()
+collection = createCollectionPDF(chunks)
+collectionSQL = createCollectionCSV(chunksSQL)
 
 class Message(BaseModel):
     text: str
@@ -50,7 +51,7 @@ async def chat(request: ChatRequest):
         elif intent == "general":
             response = "I'm a general assistant. How can I help you?"
         else:
-            response = querySQL(q, tableCnt)
+            response = querySQL(q, collectionSQL)
         addHistory(request.userId, "assistant", response)
         
         return ChatResponse(response=response)

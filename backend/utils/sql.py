@@ -1,6 +1,7 @@
 from openai import OpenAI
 from os import getenv
 from dotenv import load_dotenv
+from chonkie import OpenAIEmbeddings
 import duckdb
 
 load_dotenv()
@@ -47,17 +48,25 @@ def sql2Text(q):
     )
     return response.choices[0].message.content
 
-def querySQL(q, tableCnt):
-    for i in range(tableCnt):
-        table_name = f"table{i}"
-        df = db.sql(f"DESCRIBE {table_name}")
-        sqlQuery = text2SQL(q, df, table_name)
-        sqlQuery = sqlQuery.replace("```sql", "").replace("```", "").strip()
-        print(sqlQuery)
-        try:
-            if sqlQuery != "none":
-                result = db.sql(sqlQuery).df().to_dict(orient="records")
-                return sql2Text(str(result)) 
-        except Exception as e:
-            return f"SQL Error: {str(e)}"
-    return "I'm sorry, I can't answer that question."
+def querySQL(q, collection):
+    embeddings = OpenAIEmbeddings()
+    query_embedding = embeddings.embed(q)
+    results = collection.query(
+        query_embeddings=query_embedding,
+        n_results=3
+    )
+    print(results)
+    return "Temporary"
+    # for i in range(tableCnt):
+    #     table_name = f"table{i}"
+    #     df = db.sql(f"DESCRIBE {table_name}")
+    #     sqlQuery = text2SQL(q, df, table_name)
+    #     sqlQuery = sqlQuery.replace("```sql", "").replace("```", "").strip()
+    #     print(sqlQuery)
+    #     try:
+    #         if sqlQuery != "none":
+    #             result = db.sql(sqlQuery).df().to_dict(orient="records")
+    #             return sql2Text(str(result)) 
+    #     except Exception as e:
+    #         return f"SQL Error: {str(e)}"
+    # return "I'm sorry, I can't answer that question."
