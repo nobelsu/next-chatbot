@@ -21,8 +21,9 @@ def createCollectionPDF(x):
 def createCollectionCSV(x):
     handshake = ChromaHandshake(client=client, collection_name="csv_data", embedding_model=embeddings, path="db/csv_db")
     for i in x:
+        print(i)
         handshake.write({
-            "text": i.text,
+            "documents": i.documents,
             "metadata": i.metadata
         })
     collection = client.get_collection("csv_data")
