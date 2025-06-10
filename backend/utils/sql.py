@@ -56,7 +56,8 @@ def querySQL(q, collection):
         query_embeddings=query_embedding,
         n_results=3
     )
-    print(results["documents"][0])
+    print(results)
+    print(results["metadata"])
     # print("metadata", results["documents"][0][0].metadata)
     return "Temporary"
     # for i in range(tableCnt):
