@@ -14,6 +14,7 @@ def text2SQL(q, df, table_name):
     prompt = f"""
     You are a helpful assistant that can generate SQL queries to answer questions about the data.
     The data could be stored in the following table: {table_name}. 
+    If the table data is not helpful in responding to the user's query, return the string "none" only.
     Please ensure that the SQL queries are valid for DuckDB.
     Here is the schema of the table:
     {df}
@@ -53,7 +54,7 @@ def querySQL(q, collection):
     query_embedding = embeddings.embed(q)
     results = collection.query(
         query_embeddings=query_embedding,
-        n_results=1
+        n_results=3
     )
     print(results)
     print(results["metadatas"])
@@ -63,6 +64,8 @@ def querySQL(q, collection):
         df = db.sql(f"DESCRIBE {table_name}")
         sqlQuery = text2SQL(q, df, table_name)
         sqlQuery = sqlQuery.replace("```sql", "").replace("```", "").strip()
+        if sqlQuery == "none": 
+            continue
         result = db.sql(sqlQuery).df().to_dict(orient="records")
         return sql2Text(str(result)) 
 
