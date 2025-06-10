@@ -5,7 +5,7 @@ from typing import List, Dict
 from backend.utils.intent import classifyIntent
 from backend.utils.rewrite import rewriteQuery
 from backend.utils.query import sendQuery
-from backend.utils.memory import getHistory, addHistory
+from backend.utils.memory import getHistory, addHistory, clearHistory
 from backend.utils.collection import createCollectionPDF, createCollectionCSV
 from backend.utils.chunker import chunkFiles
 from backend.utils.sql import querySQL
@@ -64,5 +64,13 @@ async def get_chat_history(user_id: str):
     try:
         history = getHistory(user_id)
         return {"history": history}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.delete("/api/history/{user_id}")
+async def clear_chat_history(user_id: str):
+    try:
+        clearHistory(user_id)
+        return {"message": "Chat history cleared successfully"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

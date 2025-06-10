@@ -19,6 +19,17 @@ export default function ChatPage() {
   const [input, setInput] = useState('')
   const [error, setError] = useState<string | null>(null)
 
+  const clearHistory = async () => {
+    try {
+      await api.delete(`/api/history/${userId}`)
+      setMessages([])
+      setError(null)
+    } catch (error: any) {
+      console.error('Error clearing chat history:', error)
+      setError(`Failed to clear chat history: ${error.message}`)
+    }
+  }
+
   // Load chat history on component mount
   useEffect(() => {
     const loadHistory = async () => {
@@ -86,6 +97,15 @@ export default function ChatPage() {
       <div className="w-full max-w-2xl">
         <h1 className="text-3xl font-bold text-center mb-8">Chat with User: {userId}</h1>
         
+        <div className="flex justify-between items-center mb-4">
+          <button
+            onClick={clearHistory}
+            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
+          >
+            Clear History
+          </button>
+        </div>
+
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
             <span className="block sm:inline">{error}</span>

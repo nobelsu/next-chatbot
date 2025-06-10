@@ -16,3 +16,6 @@ def getHistory(user_id):
 
 def addHistory(user_id, role, message):
     r.rpush(f"chat:{user_id}", json.dumps({"role": role, "content": message}))
+
+def clearHistory(user_id):
+    r.delete(f"chat:{user_id}")
