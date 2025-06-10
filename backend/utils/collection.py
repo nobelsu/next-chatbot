@@ -23,7 +23,7 @@ def createCollectionCSV(x):
     for i in x:
         print(i)
         handshake.write({
-            "documents": i.documents,
+            "documents": i.text,
             "metadata": i.metadata
         })
     collection = client.get_collection("csv_data")
