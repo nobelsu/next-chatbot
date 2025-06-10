@@ -57,7 +57,7 @@ def querySQL(q, collection):
         n_results=3
     )
     print(results)
-    print(results["metadata"])
+    print(results["metadatas"])
     # print("metadata", results["documents"][0][0].metadata)
     return "Temporary"
     # for i in range(tableCnt):
