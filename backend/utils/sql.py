@@ -36,6 +36,7 @@ def sql2Text(q):
     You are a helpful assistant that can turn SQL data into user-friendly text.
     Make sure that the data is presented in a readable and easily digestible format.
     If the data provided is not JSON/SQL data, respond with "I'm sorry, I can't answer that question." 
+    Highlight titles, subtitles, and key details with a bold. 
 
     The data is {q}
     """
