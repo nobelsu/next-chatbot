@@ -28,7 +28,6 @@ def chunkFiles():
             for chunk in table_chunks:
                 chunk.metadata = {"table_name": table_name}
             chunksSQL.extend(table_chunks)
-
     return chunks, chunksSQL
 
 chunkFiles()
