@@ -28,8 +28,6 @@ def createCollectionCSV(chunks):
     # for chunk in chunks:
     #     handshake.write(chunk)
     # collection = client.get_collection("csv_data")
-    embeds = embed(texts)
-    print("-> ", embeds)
     collection.add(
         ids=ids,
         documents=texts,
