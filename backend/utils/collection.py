@@ -22,7 +22,7 @@ def createCollectionCSV(chunks):
     texts = [chunk.text for chunk in chunks]
     metadatas = [chunk.metadata for chunk in chunks]
     ids = [chunk.id for chunk in chunks]
-    client = chromadb.PersistentClient(path="db/csv_db")
+    client = chromadb.Client(path="db/csv_db")
     collection = client.get_or_create_collection("csv_data")
     # handshake = ChromaHandshake(client=client, collection_name="csv_data", embedding_model=embeddings, path="db/csv_db")
     # for chunk in chunks:
