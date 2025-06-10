@@ -36,7 +36,6 @@ def sql2Text(q):
     You are a helpful assistant that can turn SQL data into user-friendly text.
     Make sure that the data is presented in a readable and easily digestible format.
     If the data provided is not JSON/SQL data, respond with "I'm sorry, I can't answer that question." 
-    Highlight titles, subtitles, and key details with a bold. 
 
     The data is {q}
     """
@@ -69,20 +68,4 @@ def querySQL(q, collection):
             continue
         result = db.sql(sqlQuery).df().to_dict(orient="records")
         return sql2Text(str(result)) 
-
-
-    # print("metadata", results["documents"][0][0].metadata)
-    # return "Temporary"
-    # for i in range(tableCnt):
-    #     table_name = f"table{i}"
-    #     df = db.sql(f"DESCRIBE {table_name}")
-    #     sqlQuery = text2SQL(q, df, table_name)
-    #     sqlQuery = sqlQuery.replace("```sql", "").replace("```", "").strip()
-    #     print(sqlQuery)
-    #     try:
-    #         if sqlQuery != "none":
-    #             result = db.sql(sqlQuery).df().to_dict(orient="records")
-    #             return sql2Text(str(result)) 
-    #     except Exception as e:
-    #         return f"SQL Error: {str(e)}"
     return "I'm sorry, I can't answer that question."
