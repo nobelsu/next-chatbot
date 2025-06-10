@@ -41,7 +41,7 @@ Question: {query}"""
             {"role": "system", "content": "You are a helpful assistant that answers questions based on the provided context."},
             {"role": "user", "content": prompt}
         ],
-        temperature=temperature
+        temperature=getenv("TEMPERATURE")
     )
 
     return response.choices[0].message.content 

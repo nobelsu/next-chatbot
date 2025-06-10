@@ -27,7 +27,7 @@ def text2SQL(q, df, table_name):
             {"role": "system", "content": "You are a helpful assistant that can generate SQL queries to answer questions about the data. Only return the sql query and nothing else."},
             {"role": "user", "content": prompt}
         ],
-        temperature=0
+        temperature=getenv("TEMPERATURE")
     )
     return response.choices[0].message.content
 
@@ -45,7 +45,7 @@ def sql2Text(q):
             {"role": "system", "content": "You are a helpful assistant that can turn SQL data into user-friendly text."},
             {"role": "user", "content": prompt}
         ],
-        temperature=0
+        temperature=getenv("TEMPERATURE")
     )
     return response.choices[0].message.content
 

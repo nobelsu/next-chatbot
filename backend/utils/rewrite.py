@@ -23,7 +23,7 @@ def rewriteQuery(query, conversations: list[dict]):
         messages=[
             {"role": "user", "content": prompt}
         ],
-        temperature=0
+        temperature=getenv("TEMPERATURE")
     )
 
     return response.choices[0].message.content
