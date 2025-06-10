@@ -9,9 +9,9 @@ model = OpenAI(
     api_key=getenv("OPENAI_API_KEY"),
 )
 embeddings = OpenAIEmbeddings()
-client = chromadb.Client()
 
 def createCollectionPDF(chunks):
+    client = chromadb.Client()
     handshake = ChromaHandshake(client=client, collection_name="pdf_data", embedding_model=embeddings, path="db/pdf_db")
     for chunk in chunks:
         handshake.write(chunk)
@@ -22,7 +22,8 @@ def createCollectionCSV(chunks):
     texts = [chunk.text for chunk in chunks]
     metadatas = [chunk.metadata for chunk in chunks]
     ids = [chunk.id for chunk in chunks]
-    collection = client.get_or_create_collection("csv_data", path="db/csv_db")
+    client = chromadb.PersistentClient(path="db/csv_db")
+    collection = client.get_or_create_collection("csv_data")
     # handshake = ChromaHandshake(client=client, collection_name="csv_data", embedding_model=embeddings, path="db/csv_db")
     # for chunk in chunks:
     #     handshake.write(chunk)
