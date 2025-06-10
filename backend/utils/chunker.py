@@ -26,7 +26,8 @@ def chunkFiles():
             schema_chunker = RecursiveChunker.from_recipe("markdown", lang="en")
             table_chunks = schema_chunker.chunk(schema_text)
             for chunk in table_chunks:
-                chunk.metadatas = {"table_name": table_name}
+                chunk.metadata = {"table_name": table_name}
+                chunk.id = tableCnt
             chunksSQL.extend(table_chunks)
             tableCnt += 1
     return chunks, chunksSQL
