@@ -22,11 +22,15 @@ def createCollectionCSV(chunks):
     texts = [chunk.text for chunk in chunks]
     metadatas = [chunk.metadata for chunk in chunks]
     ids = [chunk.id for chunk in chunks]
-    print(texts)
-    print(metadatas)
-    print(ids)
-    handshake = ChromaHandshake(client=client, collection_name="csv_data", embedding_model=embeddings, path="db/csv_db")
-    for chunk in chunks:
-        handshake.write(chunk)
-    collection = client.get_collection("csv_data")
+    collection = client.get_or_create_collection("csv_data", path="db/csv_db")
+    # handshake = ChromaHandshake(client=client, collection_name="csv_data", embedding_model=embeddings, path="db/csv_db")
+    # for chunk in chunks:
+    #     handshake.write(chunk)
+    # collection = client.get_collection("csv_data")
+    collection.add(
+        ids=ids,
+        documents=texts,
+        embeddings=embeddings(texts),
+        metadatas=metadatas
+    )
     return collection
